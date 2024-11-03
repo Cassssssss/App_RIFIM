@@ -6,7 +6,9 @@ import { AddFolder } from './pages/AddFolder';
 import { LocationDetail } from './pages/LocationDetail';
 import { AddContent } from './pages/AddContent';
 import { EditContent } from './pages/EditContent';
-import { ViewContent } from './pages/ViewContent'; // Nouveau import
+import { ViewContent } from './pages/ViewContent'; 
+import Logo from './LogoGenerator';
+
 
 function App() {
   return (
@@ -22,6 +24,7 @@ function App() {
           <Route path="/system/:systemId/location/:locationId/content/:type/:contentId/view" element={<ViewContent />} /> {/* Route modifiée */}
           <Route path="/system/:systemId/location/:locationId/content/:type/edit/:contentId" element={<EditContent />} />
           <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="/logo-generator" element={<Logo />} />
         </Routes>
       </div>
     </Router>
