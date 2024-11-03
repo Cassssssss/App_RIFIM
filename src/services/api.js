@@ -1,4 +1,9 @@
-const API_URL = '/api'; 
+const API_URL = process.env.NODE_ENV === 'development' 
+  ? 'http://localhost:5002/api'  // URL pour le développement
+  : '/api';  // URL relative pour la production
+
+console.log('Environment:', process.env.NODE_ENV);
+console.log('API URL:', API_URL);
 
 const defaultHeaders = {
   'Content-Type': 'application/json',
