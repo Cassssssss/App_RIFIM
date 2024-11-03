@@ -6,77 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#4f5b93" />
     <meta name="description" content="RIFIM - Application d'apprentissage médical et radiologique" />
-    
-    <!-- iOS specific -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="RIFIM" />
+    
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <link rel="apple-touch-startup-image" href="%PUBLIC_URL%/splashscreen.png" />
-    
-    <!-- Smart App Banner -->
-    <meta name="apple-itunes-app" content="app-argument=https://sea-turtle-app-srwkw.ondigitalocean.app/" />
-    
-    <!-- Add to Home Screen prompt -->
-    <script>
-      window.addEventListener('beforeinstallprompt', (e) => {
-        if (localStorage.getItem('installPromptShown')) return;
-        
-        setTimeout(() => {
-          const installBanner = document.createElement('div');
-          installBanner.innerHTML = `
-            <div id="install-banner" style="position: fixed; bottom: 0; left: 0; right: 0; background: #4f5b93; color: white; padding: 16px; display: flex; justify-content: space-between; align-items: center; z-index: 9999;">
-              <div>Installez RIFIM sur votre écran d'accueil</div>
-              <div>
-                <button onclick="addToHomeScreen()" style="background: white; color: #4f5b93; border: none; padding: 8px 16px; border-radius: 4px; margin-right: 8px;">Installer</button>
-                <button onclick="dismissBanner()" style="background: transparent; color: white; border: 1px solid white; padding: 8px 16px; border-radius: 4px;">Plus tard</button>
-              </div>
-            </div>
-          `;
-          document.body.appendChild(installBanner);
-        }, 2000);
-        
-        localStorage.setItem('installPromptShown', 'true');
-      });
-      
-      function addToHomeScreen() {
-        const userAgent = window.navigator.userAgent.toLowerCase();
-        const isIOS = /iphone|ipad|ipod/.test(userAgent);
-        
-        if (isIOS) {
-          alert("Pour installer l'application :\n1. Appuyez sur l'icône de partage (rectangle avec une flèche)\n2. Faites défiler et appuyez sur 'Sur l'écran d'accueil'");
-        }
-        document.getElementById('install-banner')?.remove();
-      }
-      
-      function dismissBanner() {
-        document.getElementById('install-banner')?.remove();
-      }
-    </script>
-
+    <link rel="apple-touch-startup-image" href="%PUBLIC_URL%/logo512.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    
     <title>RIFIM - Radiologie</title>
-
-    <!-- QR Code generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script>
-      // Générer QR Code au chargement
-      window.onload = function() {
-        const isDesktop = window.innerWidth > 768;
-        if (isDesktop) {
-          const qrDiv = document.createElement('div');
-          qrDiv.id = 'qrcode';
-          qrDiv.style = 'position: fixed; bottom: 20px; right: 20px; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);';
-          document.body.appendChild(qrDiv);
-          
-          new QRCode(qrDiv, {
-            text: "https://sea-turtle-app-srwkw.ondigitalocean.app",
-            width: 128,
-            height: 128
-          });
-        }
-      }
-    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
