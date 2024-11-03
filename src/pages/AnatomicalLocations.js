@@ -1,15 +1,16 @@
-// src/pages/AnatomicalLocations.js
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Plus, Search, ChevronLeft, Trash2 } from 'lucide-react';
+import { Plus, Search, Trash2 } from 'lucide-react';
 import { api } from '../services/api';
+import Header from '../components/Header';
 
 export const AnatomicalLocations = () => {
   const { systemId } = useParams();
   const navigate = useNavigate();
   const [locations, setLocations] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [system, setSystem] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     loadLocations();
@@ -17,18 +18,24 @@ export const AnatomicalLocations = () => {
 
   const loadLocations = async () => {
     try {
+      setLoading(true);
       console.log('Loading locations for systemId:', systemId);
       const locationsData = await api.getLocations(systemId);
       console.log('Loaded locations:', locationsData);
       
       if (!Array.isArray(locationsData)) {
         console.error('Les données reçues ne sont pas un tableau:', locationsData);
+        setError('Format de données invalide');
         return;
       }
       
       setLocations(locationsData);
+      setError(null);
     } catch (error) {
       console.error('Erreur dans loadLocations:', error);
+      setError('Impossible de charger les localisations');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,22 +43,21 @@ export const AnatomicalLocations = () => {
     e.preventDefault();
     if (window.confirm('Voulez-vous vraiment supprimer cette localisation ?')) {
       try {
+        setLoading(true);
         await api.deleteLocation(locationId);
-        loadLocations();
+        await loadLocations();
       } catch (error) {
         console.error('Erreur lors de la suppression:', error);
+        setError('Erreur lors de la suppression');
+      } finally {
+        setLoading(false);
       }
     }
   };
 
   return (
-    <div>
-      <div className="bg-[#4f5b93] text-white p-4 flex items-center">
-        <button onClick={() => navigate('/')} className="mr-4">
-          <ChevronLeft size={24} />
-        </button>
-        <h1 className="text-xl font-semibold">Localisations</h1>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      <Header title="Localisations" showBack={true} />
 
       <div className="p-4">
         <div className="relative mb-4">
@@ -65,31 +71,56 @@ export const AnatomicalLocations = () => {
           />
         </div>
 
-        <div className="grid gap-4">
-          {locations
-            .filter(location => location.name.toLowerCase().includes(searchTerm.toLowerCase()))
-            .map((location) => (
-              <div 
-                key={location._id}
-                className="block bg-white rounded-lg shadow p-4 hover:shadow-lg transition-shadow relative"
-              >
-                <Link to={`/system/${systemId}/location/${location._id}`}>
-                  <h2 className="text-lg font-semibold text-[#4f5b93]">{location.name}</h2>
-                </Link>
-                <button
-                  onClick={(e) => handleDelete(location._id, e)}
-                  className="absolute right-4 top-4 text-red-500 hover:text-red-700"
-                >
-                  <Trash2 size={20} />
-                </button>
+        {error && (
+          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-700">{error}</p>
+          </div>
+        )}
+
+        {loading ? (
+          <div className="flex justify-center items-center p-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#4f5b93]"></div>
+          </div>
+        ) : (
+          <div className="grid gap-4 mb-20">
+            {locations.length === 0 && !error ? (
+              <div className="text-center p-8 bg-white rounded-lg shadow">
+                <p className="text-gray-500">Aucune localisation trouvée</p>
+                <p className="text-sm text-gray-400 mt-2">
+                  Cliquez sur le + pour en ajouter une
+                </p>
               </div>
-            ))}
-        </div>
+            ) : (
+              locations
+                .filter(location => 
+                  location.name.toLowerCase().includes(searchTerm.toLowerCase())
+                )
+                .map((location) => (
+                  <div 
+                    key={location._id}
+                    className="block bg-white rounded-lg shadow p-4 hover:shadow-lg transition-shadow relative"
+                  >
+                    <Link to={`/system/${systemId}/location/${location._id}`}>
+                      <h2 className="text-lg font-semibold text-[#4f5b93]">
+                        {location.name}
+                      </h2>
+                    </Link>
+                    <button
+                      onClick={(e) => handleDelete(location._id, e)}
+                      className="absolute right-4 top-4 text-red-500 hover:text-red-700"
+                    >
+                      <Trash2 size={20} />
+                    </button>
+                  </div>
+                ))
+            )}
+          </div>
+        )}
       </div>
 
       <button
         onClick={() => navigate(`/add-folder/location/${systemId}`)}
-        className="fixed bottom-6 right-6 bg-[#4f5b93] text-white rounded-full p-4 shadow-lg hover:bg-[#3f4973] transition-colors"
+        className="fixed bottom-[max(1.5rem,env(safe-area-inset-bottom))] right-6 bg-[#4f5b93] text-white rounded-full p-4 shadow-lg hover:bg-[#3f4973] transition-colors"
       >
         <Plus size={24} />
       </button>
