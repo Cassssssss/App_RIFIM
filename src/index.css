@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'react-quill/dist/quill.snow.css';
+
+/* Styles pour le contenu de l'éditeur */
+.prose {
+  max-width: 65ch;
+}
+
+.prose img {
+  margin: 1em 0;
+}
+
+.prose p {
+  margin-bottom: 1em;
+}
+
+.prose ul, .prose ol {
+  margin-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.prose h1, .prose h2, .prose h3 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
