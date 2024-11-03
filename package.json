@@ -19,17 +19,18 @@
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.27.0",
     "react-scripts": "5.0.1",
+    "serve": "^14.2.4",
     "tailwindcss": "^3.4.14",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "PORT=5003 react-scripts start",
+    "start": "NODE_ENV=production serve -s build -l 5003",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "dev:client": "PORT=5003 react-scripts start",
     "dev:server": "cd backend && npm run dev",
-    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\""
+    "dev": "PORT=5003 react-scripts start"
   },
   "eslintConfig": {
     "extends": [
