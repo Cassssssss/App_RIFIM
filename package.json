@@ -1,21 +1,14 @@
 {
-  "name": "rifim",
+  "name": "rifim-frontend",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.685.0",
     "@headlessui/react": "^2.2.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "autoprefixer": "^10.4.20",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.21.1",
     "lucide-react": "^0.454.0",
-    "mongoose": "^8.8.0",
-    "multer": "^1.4.5-lts.1",
-    "path": "^0.12.7",
     "postcss": "^8.4.47",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -26,12 +19,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "node server.js",
-    "dev:server": "PORT=5002 nodemon server.js",
-    "dev:client": "PORT=5003 react-scripts start",
+    "start": "PORT=5003 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "dev:client": "PORT=5003 react-scripts start",
+    "dev:server": "cd backend && npm run dev",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\""
   },
   "eslintConfig": {
@@ -52,12 +45,9 @@
       "last 1 safari version"
     ]
   },
-  "engines": {
-    "node": "20.x",
-    "npm": "10.x"
-  },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "concurrently": "^8.2.2",
     "nodemon": "^3.1.7"
   }
 }

@@ -1,4 +1,3 @@
-// src/pages/EditContent.js
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
@@ -69,7 +68,6 @@ export const EditContent = () => {
 
   useEffect(() => {
     return () => {
-      // Cleanup preview URLs on unmount
       previewUrls.forEach(url => URL.revokeObjectURL(url));
     };
   }, [previewUrls]);
@@ -95,22 +93,13 @@ export const EditContent = () => {
       formDataToSend.append('type', type);
       formDataToSend.append('locationId', locationId);
       
-      // Ajouter les nouvelles images
       if (formData.images && formData.images.length > 0) {
         Array.from(formData.images).forEach(file => {
           formDataToSend.append('images', file);
         });
       }
 
-      // Ajouter les images existantes
       formDataToSend.append('existingImages', JSON.stringify(existingImages));
-
-      console.log('Updating content with:', {
-        contentId,
-        title: formData.title,
-        type,
-        locationId
-      });
 
       const result = await api.updateContent(contentId, formDataToSend);
       console.log('Content updated:', result);
@@ -127,7 +116,6 @@ export const EditContent = () => {
   const handleImageChange = (e) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      // Validate each file
       const validFiles = Array.from(files).filter(file => {
         const isValid = file.type.startsWith('image/');
         if (!isValid) {
@@ -142,7 +130,6 @@ export const EditContent = () => {
           images: validFiles
         }));
 
-        // Create and store preview URLs
         const urls = validFiles.map(file => URL.createObjectURL(file));
         setPreviewUrls(prev => {
           prev.forEach(url => URL.revokeObjectURL(url));
@@ -157,7 +144,6 @@ export const EditContent = () => {
   };
 
   const handleCancel = () => {
-    // Clean up preview URLs
     previewUrls.forEach(url => URL.revokeObjectURL(url));
     navigate(`/system/${systemId}/location/${locationId}`);
   };
@@ -179,7 +165,7 @@ export const EditContent = () => {
 
   if (loading && !error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#f5f6f8] flex items-center justify-center">
         <div className="text-lg sm:text-xl text-gray-600">Chargement...</div>
       </div>
     );
@@ -187,7 +173,7 @@ export const EditContent = () => {
 
   if (error && (!systemId || !locationId)) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-[#f5f6f8] flex items-center justify-center p-4">
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg text-sm sm:text-base">
           {error}
           <p className="mt-2">Redirection en cours...</p>
@@ -197,15 +183,26 @@ export const EditContent = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-[#4f5b93] text-white p-4 flex items-center sticky top-0 z-50">
-        <button onClick={handleCancel} className="mr-4">
-          <ChevronLeft size={24} />
-        </button>
-        <h1 className="text-lg sm:text-xl font-semibold truncate">
-          Modifier la fiche {type === 'measure' ? 'de repères & mesures' : 'de classification'}
-        </h1>
+    <div className="min-h-screen bg-[#f5f6f8]">
+      <div className="fixed top-0 left-0 right-0 z-50">
+        {/* Safe area spacer pour iOS */}
+        <div className="w-full h-[env(safe-area-inset-top)] bg-[#4f5b93]" />
+        
+        {/* Header principal */}
+        <div className="bg-[#4f5b93] text-white">
+          <div className="h-16 flex items-center px-4">
+            <button onClick={handleCancel} className="mr-3">
+              <ChevronLeft size={24} />
+            </button>
+            <h1 className="text-xl font-semibold truncate">
+              Modifier la fiche {type === 'measure' ? 'de repères & mesures' : 'de classification'}
+            </h1>
+          </div>
+        </div>
       </div>
+
+      {/* Spacer pour le header fixe */}
+      <div className="h-[calc(4rem+env(safe-area-inset-top))]" />
 
       <div className="p-2 sm:p-4 pb-24">
         <div className="max-w-4xl mx-auto">

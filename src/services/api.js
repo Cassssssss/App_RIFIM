@@ -1,12 +1,5 @@
-const API_URL = (() => {
-  console.log('Environment:', process.env.NODE_ENV);
-  
-  if (process.env.NODE_ENV === 'development') {
-    // Le backend doit toujours pointer vers le port 5002
-    return 'http://localhost:5002/api';
-  }
-  return '/api';
-})();
+const API_URL = 'http://localhost:5002/api';
+
 
 const defaultHeaders = {
   'Content-Type': 'application/json',

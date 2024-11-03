@@ -48,7 +48,7 @@ export const ViewContent = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#f5f6f8] flex items-center justify-center">
         <div className="text-lg sm:text-xl text-gray-600">Chargement...</div>
       </div>
     );
@@ -56,7 +56,7 @@ export const ViewContent = () => {
 
   if (error || !content) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-[#f5f6f8] flex items-center justify-center p-4">
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg text-sm sm:text-base">
           {error || 'Fiche non trouvée'}
         </div>
@@ -65,34 +65,48 @@ export const ViewContent = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-[#4f5b93] text-white p-4 flex items-center justify-between sticky top-0 z-50">
-        <div className="flex items-center flex-1">
-          <button onClick={handleBack} className="mr-4">
-            <ChevronLeft size={24} />
-          </button>
-          <h1 className="text-lg sm:text-xl font-semibold truncate">{content.title}</h1>
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={handleEdit}
-            className="p-2 hover:bg-[#3f4973] rounded-full transition-colors"
-            aria-label="Modifier"
-          >
-            <Edit size={20} />
-          </button>
-          <button
-            onClick={handleDelete}
-            className="p-2 hover:bg-[#3f4973] rounded-full transition-colors"
-            aria-label="Supprimer"
-          >
-            <Trash2 size={20} />
-          </button>
+    <div className="min-h-screen bg-[#f5f6f8]">
+      <div className="fixed top-0 left-0 right-0 z-50">
+        {/* Safe area spacer pour iOS */}
+        <div className="w-full h-[env(safe-area-inset-top)] bg-[#4f5b93]" />
+        
+        {/* Header principal */}
+        <div className="bg-[#4f5b93] text-white">
+          <div className="h-16 flex items-center px-4 justify-between">
+            <div className="flex items-center flex-1">
+              <button onClick={handleBack} className="mr-3">
+                <ChevronLeft size={24} />
+              </button>
+              <h1 className="text-xl font-semibold truncate">
+                {content.title}
+              </h1>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleEdit}
+                className="p-2 hover:bg-[#3f4973] rounded-full transition-colors"
+                aria-label="Modifier"
+              >
+                <Edit size={20} />
+              </button>
+              <button
+                onClick={handleDelete}
+                className="p-2 hover:bg-[#3f4973] rounded-full transition-colors"
+                aria-label="Supprimer"
+              >
+                <Trash2 size={20} />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="p-2 sm:p-4 max-w-4xl mx-auto">
-        <div className="bg-white rounded-lg shadow-lg p-3 sm:p-6">
+      {/* Spacer pour le header fixe */}
+      <div className="h-[calc(4rem+env(safe-area-inset-top))]" />
+
+      <div className="p-4 max-w-4xl mx-auto">
+        <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
           {content.description && (
             <div 
               className="text-gray-700 prose prose-sm sm:prose-base lg:prose-lg max-w-none ql-editor"
@@ -101,7 +115,7 @@ export const ViewContent = () => {
           )}
           
           {content.images && content.images.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-4 sm:mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
               {content.images.map((image, index) => (
                 <div key={index} className="relative">
                   <img
@@ -111,7 +125,7 @@ export const ViewContent = () => {
                     loading="lazy"
                   />
                   {image.caption && (
-                    <p className="mt-2 text-xs sm:text-sm text-gray-500 text-center">
+                    <p className="mt-2 text-sm text-gray-500 text-center">
                       {image.caption}
                     </p>
                   )}
