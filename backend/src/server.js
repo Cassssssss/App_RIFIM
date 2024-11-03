@@ -9,8 +9,10 @@ const app = express();
 
 // Configuration CORS
 app.use(cors({
-  origin: ['http://localhost:5003', 'https://sea-turtle-app-srwkw.ondigitalocean.app'],
-  credentials: true,
+  origin: [
+    'http://localhost:5003', 
+    'https://sea-turtle-app-srwkw.ondigitalocean.app'
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));

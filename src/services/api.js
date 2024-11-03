@@ -13,9 +13,9 @@ export const api = {
       const response = await fetch(`${API_URL}/systems`, {
         method: 'GET',
         headers: defaultHeaders,
-        mode: 'cors'  // Gardez cette ligne
+        mode: 'cors'
       });
-  
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -33,7 +33,7 @@ export const api = {
       const response = await fetch(`${API_URL}/systems`, {
         method: 'POST',
         headers: defaultHeaders,
-        credentials: 'include',
+        mode: 'cors',
         body: JSON.stringify({ name })
       });
       if (!response.ok) throw new Error('Erreur lors de la création du système');
