@@ -6,16 +6,19 @@ const connectDB = require('./config/db');
 const apiRoutes = require('./routes/api');
 
 const app = express();
-const PORT = process.env.PORT || 5002;
+const PORT = process.env.PORT || 5003;
 
 // Configuration de CORS
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN || 'https://sea-turtle-app-srwkw.ondigitalocean.app',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  exposedHeaders: ['Content-Range', 'X-Content-Range']
-};
+    origin: process.env.NODE_ENV === 'development' 
+      ? 'http://localhost:5003' 
+      : process.env.CORS_ORIGIN,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+  };
+  
+  app.use(cors(corsOptions));
 
 // Middleware
 app.use(cors({

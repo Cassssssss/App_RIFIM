@@ -27,11 +27,12 @@
   },
   "scripts": {
     "start": "node server.js",
-    "dev:server": "nodemon server.js",
-    "dev:client": "react-scripts start",
+    "dev:server": "PORT=5002 nodemon server.js",
+    "dev:client": "PORT=5003 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\""
   },
   "eslintConfig": {
     "extends": [

@@ -1,16 +1,12 @@
 const API_URL = (() => {
   console.log('Environment:', process.env.NODE_ENV);
-  console.log('API URL from env:', process.env.REACT_APP_API_URL);
   
-  // En production, utiliser le chemin relatif car le frontend et le backend sont sur le même domaine
-  if (process.env.NODE_ENV === 'production') {
-    return '/api';
+  if (process.env.NODE_ENV === 'development') {
+    // Le backend doit toujours pointer vers le port 5002
+    return 'http://localhost:5002/api';
   }
-  // En développement, utiliser l'URL complète
-  return process.env.REACT_APP_API_URL || 'http://localhost:5002/api';
+  return '/api';
 })();
-
-console.log('Using API URL:', API_URL);
 
 const defaultHeaders = {
   'Content-Type': 'application/json',
@@ -28,26 +24,14 @@ export const api = {
         credentials: 'include'
       });
 
-      console.log('📥 Réponse reçue:', {
-        ok: response.ok,
-        status: response.status,
-        statusText: response.statusText
-      });
-
       if (!response.ok) {
-        console.log('❌ Réponse non OK');
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const data = await response.json();
-      console.log('✅ Données reçues:', data);
       return data;
     } catch (error) {
-      console.log('🔴 Erreur dans getSystems:', {
-        message: error.message,
-        stack: error.stack,
-        type: error.constructor.name
-      });
+      console.error('🔴 Erreur dans getSystems:', error);
       return [];
     }
   },
