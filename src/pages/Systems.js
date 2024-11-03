@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Plus, Search, Trash2, AlertCircle, Loader } from 'lucide-react';
 import { api } from '../services/api';
+import Header from '../components/Header';
 
 export const Systems = () => {
   const [systems, setSystems] = useState([]);
@@ -44,12 +45,7 @@ export const Systems = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-safe">
-      <div className="bg-[#4f5b93] text-white fixed top-0 left-0 right-0 z-50 safe-header">
-        <h1 className="text-xl font-semibold">Systèmes radiologiques</h1>
-      </div>
-
-      {/* Spacer pour le header fixe */}
-      <div className="h-[calc(4rem+env(safe-area-inset-top))]" />
+      <Header title="Systèmes radiologiques" showBack={false} />
 
       <div className="p-4">
         <div className="relative mb-4">
