@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ChevronLeft } from 'lucide-react';
+import Header from '../components/Header';
 import { api } from '../services/api';
 
 export const AddFolder = () => {
@@ -24,24 +24,15 @@ export const AddFolder = () => {
     }
   };
 
-  const handleBack = () => {
-    if (type === 'system') {
-      navigate('/');
-    } else {
-      navigate(`/system/${systemId}`);
-    }
-  };
-
   return (
-    <div>
-      <div className="bg-[#4f5b93] text-white p-4 flex items-center">
-        <button onClick={handleBack} className="mr-4">
-          <ChevronLeft size={24} />
-        </button>
-        <h1 className="text-xl font-semibold">
-          Ajouter {type === 'system' ? 'un système' : 'une localisation'}
-        </h1>
-      </div>
+    <div className="min-h-screen bg-[#f5f6f8]">
+      <Header 
+        title={`Ajouter ${type === 'system' ? 'un système' : 'une localisation'}`}
+        showBack={true}
+      />
+
+      {/* Spacer pour compenser le header fixe */}
+      <div className="h-[calc(4rem+env(safe-area-inset-top))]" />
 
       <div className="p-4">
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -68,3 +59,5 @@ export const AddFolder = () => {
     </div>
   );
 };
+
+export default AddFolder;

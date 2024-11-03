@@ -1,35 +1,58 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 
 const Header = ({ title, showBack = true }) => {
   const navigate = useNavigate();
-  
+  const location = useLocation();
+
+  const handleBack = () => {
+    const path = location.pathname;
+    
+    if (path.includes('/add-folder/location/')) {
+      // Retour à la page du système parent
+      const systemId = path.split('/add-folder/location/')[1];
+      navigate(`/system/${systemId}`);
+    } else if (path.includes('/content/')) {
+      // Si on est dans une fiche, retour à la liste des fiches
+      const baseUrl = path.split('/content/')[0];
+      navigate(baseUrl);
+    } else if (path.includes('/location/')) {
+      // Si on est dans une localisation, retour au système
+      const systemId = path.split('/system/')[1]?.split('/')[0];
+      navigate(`/system/${systemId}`);
+    } else if (path.includes('/system/')) {
+      // Si on est dans un système, retour à la liste des systèmes
+      navigate('/');
+    } else {
+      // Fallback
+      navigate(-1);
+    }
+  };
+
   return (
-    <>
-      <div className="fixed top-0 left-0 right-0 z-50">
-        {/* Safe area spacer pour iOS */}
-        <div className="w-full h-[env(safe-area-inset-top)] bg-[#4f5b93]" />
-        
-        {/* Header principal */}
-        <div className="bg-[#4f5b93] text-white">
-          <div className="h-16 flex items-center px-4">
-            {showBack && (
-              <button 
-                onClick={() => navigate(-1)}
-                className="mr-3"
-              >
-                <ChevronLeft size={24} />
-              </button>
-            )}
-            <h1 className="text-xl font-semibold">{title}</h1>
-          </div>
+    <div className="fixed top-0 left-0 right-0 z-50">
+      {/* Safe area spacer */}
+      <div className="w-full h-[env(safe-area-inset-top)] bg-[#4f5b93]" />
+      
+      {/* Header content */}
+      <div className="bg-[#4f5b93] text-white">
+        <div className="h-16 flex items-center px-4">
+          {showBack && (
+            <button 
+              onClick={handleBack}
+              className="mr-3 -ml-2 p-2"
+            >
+              <ChevronLeft size={24} />
+            </button>
+          )}
+          
+          <h1 className="text-xl font-semibold flex-1 truncate">
+            {title}
+          </h1>
         </div>
       </div>
-      
-      {/* Spacer pour compenser le header fixe */}
-      <div className="h-[calc(4rem+env(safe-area-inset-top))]" />
-    </>
+    </div>
   );
 };
 
