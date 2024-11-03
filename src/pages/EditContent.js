@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { ChevronLeft } from 'lucide-react';
 import ReactQuill from 'react-quill';
 import { api } from '../services/api';
+import Header from '../components/Header';
 
 export const EditContent = () => {
   const { systemId, locationId, type, contentId } = useParams();
@@ -143,11 +143,6 @@ export const EditContent = () => {
     setExistingImages(prev => prev.filter((_, i) => i !== index));
   };
 
-  const handleCancel = () => {
-    previewUrls.forEach(url => URL.revokeObjectURL(url));
-    navigate(`/system/${systemId}/location/${locationId}`);
-  };
-
   const quillModules = {
     toolbar: {
       container: [
@@ -184,22 +179,10 @@ export const EditContent = () => {
 
   return (
     <div className="min-h-screen bg-[#f5f6f8]">
-      <div className="fixed top-0 left-0 right-0 z-50">
-        {/* Safe area spacer pour iOS */}
-        <div className="w-full h-[env(safe-area-inset-top)] bg-[#4f5b93]" />
-        
-        {/* Header principal */}
-        <div className="bg-[#4f5b93] text-white">
-          <div className="h-16 flex items-center px-4">
-            <button onClick={handleCancel} className="mr-3">
-              <ChevronLeft size={24} />
-            </button>
-            <h1 className="text-xl font-semibold truncate">
-              Modifier la fiche {type === 'measure' ? 'de repères & mesures' : 'de classification'}
-            </h1>
-          </div>
-        </div>
-      </div>
+      <Header 
+        title={`Modifier la fiche ${type === 'measure' ? 'de repères & mesures' : 'de classification'}`}
+        showBack={true}
+      />
 
       {/* Spacer pour le header fixe */}
       <div className="h-[calc(4rem+env(safe-area-inset-top))]" />
@@ -293,7 +276,7 @@ export const EditContent = () => {
               <div className="max-w-4xl mx-auto flex gap-2 sm:gap-4">
                 <button
                   type="button"
-                  onClick={handleCancel}
+                  onClick={() => navigate(`/system/${systemId}/location/${locationId}`)}
                   className="flex-1 bg-gray-200 text-gray-700 p-3 rounded-lg hover:bg-gray-300 transition-colors text-sm sm:text-base"
                 >
                   Annuler

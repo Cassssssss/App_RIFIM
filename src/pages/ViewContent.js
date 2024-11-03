@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ChevronLeft, Edit, Trash2 } from 'lucide-react';
 import { api } from '../services/api';
+import Header from '../components/Header';
+import { Edit, Trash2 } from 'lucide-react';
 
 export const ViewContent = () => {
   const { systemId, locationId, contentId } = useParams();
@@ -25,10 +26,6 @@ export const ViewContent = () => {
 
     loadContent();
   }, [contentId]);
-
-  const handleBack = () => {
-    navigate(`/system/${systemId}/location/${locationId}`);
-  };
 
   const handleEdit = () => {
     navigate(`/system/${systemId}/location/${locationId}/content/${content.type}/edit/${contentId}`);
@@ -66,47 +63,32 @@ export const ViewContent = () => {
 
   return (
     <div className="min-h-screen bg-[#f5f6f8]">
-      <div className="fixed top-0 left-0 right-0 z-50">
-        {/* Safe area spacer pour iOS */}
-        <div className="w-full h-[env(safe-area-inset-top)] bg-[#4f5b93]" />
-        
-        {/* Header principal */}
-        <div className="bg-[#4f5b93] text-white">
-          <div className="h-16 flex items-center px-4 justify-between">
-            <div className="flex items-center flex-1">
-              <button onClick={handleBack} className="mr-3">
-                <ChevronLeft size={24} />
-              </button>
-              <h1 className="text-xl font-semibold truncate">
-                {content.title}
-              </h1>
-            </div>
-            
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handleEdit}
-                className="p-2 hover:bg-[#3f4973] rounded-full transition-colors"
-                aria-label="Modifier"
-              >
-                <Edit size={20} />
-              </button>
-              <button
-                onClick={handleDelete}
-                className="p-2 hover:bg-[#3f4973] rounded-full transition-colors"
-                aria-label="Supprimer"
-              >
-                <Trash2 size={20} />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <Header title={content.title} showBack={true} />
+      
       {/* Spacer pour le header fixe */}
       <div className="h-[calc(4rem+env(safe-area-inset-top))]" />
 
       <div className="p-4 max-w-4xl mx-auto">
-        <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
+        <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 mb-4">
+          {/* Boutons d'action */}
+          <div className="flex justify-end gap-2 mb-4">
+            <button
+              onClick={handleEdit}
+              className="p-2 text-blue-500 hover:text-blue-700 transition-colors"
+              aria-label="Modifier"
+            >
+              <Edit size={20} />
+            </button>
+            <button
+              onClick={handleDelete}
+              className="p-2 text-red-500 hover:text-red-700 transition-colors"
+              aria-label="Supprimer"
+            >
+              <Trash2 size={20} />
+            </button>
+          </div>
+
+          {/* Contenu */}
           {content.description && (
             <div 
               className="text-gray-700 prose prose-sm sm:prose-base lg:prose-lg max-w-none ql-editor"

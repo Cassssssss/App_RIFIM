@@ -1,9 +1,8 @@
-// src/pages/AddContent.js
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { ChevronLeft } from 'lucide-react';
 import ReactQuill from 'react-quill';
 import { api } from '../services/api';
+import Header from '../components/Header';
 
 export const AddContent = () => {
   const { systemId, locationId, type } = useParams();
@@ -110,7 +109,10 @@ export const AddContent = () => {
       });
 
       if (validFiles.length > 0) {
-        setFormData(prev => ({ ...prev, images: validFiles }));
+        setFormData(prev => ({
+          ...prev,
+          images: validFiles
+        }));
         
         // Create and store preview URLs
         const urls = validFiles.map(file => URL.createObjectURL(file));
@@ -120,12 +122,6 @@ export const AddContent = () => {
         });
       }
     }
-  };
-
-  const handleCancel = () => {
-    // Clean up preview URLs
-    previewUrls.forEach(url => URL.revokeObjectURL(url));
-    navigate(`/system/${systemId}/location/${locationId}`);
   };
 
   const quillModules = {
@@ -156,14 +152,13 @@ export const AddContent = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-[#4f5b93] text-white p-4 flex items-center sticky top-0 z-50">
-        <button onClick={handleCancel} className="mr-4">
-          <ChevronLeft size={24} />
-        </button>
-        <h1 className="text-lg sm:text-xl font-semibold truncate">
-          Ajouter une fiche {type === 'measure' ? 'de repères & mesures' : 'de classification'}
-        </h1>
-      </div>
+      <Header 
+        title={`Ajouter une fiche ${type === 'measure' ? 'de repères & mesures' : 'de classification'}`}
+        showBack={true}
+      />
+
+      {/* Spacer pour le header fixe */}
+      <div className="h-[calc(4rem+env(safe-area-inset-top))]" />
 
       <div className="p-2 sm:p-4 pb-24">
         <div className="max-w-4xl mx-auto">
@@ -202,35 +197,35 @@ export const AddContent = () => {
             </div>
 
             <div>
-  <label className="block text-gray-700 font-medium mb-1 sm:mb-2">Images</label>
-  <input
-    ref={fileInputRef}
-    type="file"
-    multiple
-    accept="image/*"
-    onChange={handleImageChange}
-    className="w-full p-2 border rounded-lg text-sm sm:text-base"
-  />
-  {previewUrls.length > 0 && (
-    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4 mt-4">
-      {previewUrls.map((url, index) => (
-        <div key={index} className="relative aspect-video">
-          <img
-            src={url}
-            alt={`Aperçu ${index + 1}`}
-            className="w-full h-full object-cover rounded-lg"
-          />
-        </div>
-      ))}
-    </div>
-  )}
-</div>
+              <label className="block text-gray-700 font-medium mb-1 sm:mb-2">Images</label>
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleImageChange}
+                className="w-full p-2 border rounded-lg text-sm sm:text-base"
+              />
+              {previewUrls.length > 0 && (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4 mt-4">
+                  {previewUrls.map((url, index) => (
+                    <div key={index} className="relative aspect-video">
+                      <img
+                        src={url}
+                        alt={`Aperçu ${index + 1}`}
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-2 sm:p-4">
               <div className="max-w-4xl mx-auto flex gap-2 sm:gap-4">
                 <button
                   type="button"
-                  onClick={handleCancel}
+                  onClick={() => navigate(`/system/${systemId}/location/${locationId}`)}
                   className="flex-1 bg-gray-200 text-gray-700 p-3 rounded-lg hover:bg-gray-300 transition-colors text-sm sm:text-base"
                 >
                   Annuler

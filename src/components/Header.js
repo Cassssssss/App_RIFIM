@@ -38,18 +38,27 @@ const Header = ({ title, showBack = true }) => {
       {/* Header content */}
       <div className="bg-[#4f5b93] text-white">
         <div className="h-16 flex items-center px-4">
-          {showBack && (
-            <button 
-              onClick={handleBack}
-              className="mr-3 -ml-2 p-2"
-            >
-              <ChevronLeft size={24} />
-            </button>
-          )}
-          
-          <h1 className="text-xl font-semibold flex-1 truncate">
-            {title}
-          </h1>
+          <div className="flex items-center flex-1">
+            {showBack && (
+              <button 
+                onClick={handleBack}
+                className="mr-3 -ml-2 p-2"
+              >
+                <ChevronLeft size={24} />
+              </button>
+            )}
+            
+            <h1 className="text-xl font-semibold truncate">
+              {title}
+            </h1>
+          </div>
+
+          <button 
+            onClick={() => navigate('/')} 
+            className="text-white font-semibold hover:text-gray-200 transition-colors"
+          >
+            RIFIM
+          </button>
         </div>
       </div>
     </div>
