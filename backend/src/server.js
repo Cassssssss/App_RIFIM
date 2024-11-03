@@ -7,13 +7,9 @@ const apiRoutes = require('../routes/api');
 
 const app = express();
 
-// Configuration CORS 
+// Configuration CORS
 app.use(cors({
-  origin: [
-    'http://localhost:5003',
-    'https://sea-turtle-app-srwkw.ondigitalocean.app',
-    process.env.CORS_ORIGIN
-  ].filter(Boolean),
+  origin: ['http://localhost:5003', 'https://sea-turtle-app-srwkw.ondigitalocean.app'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
@@ -25,22 +21,10 @@ app.use(express.urlencoded({ extended: true }));
 // Connexion à MongoDB
 connectDB();
 
-// Logger middleware
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
-  next();
-});
-
 // Routes API
 app.use('/api', apiRoutes);
 
 const port = process.env.PORT || 5002;
 app.listen(port, () => {
   console.log(`Backend server running on port ${port}`);
-  console.log(`API accessible at http://localhost:${port}/api`);
-});
-
-// Gestion des erreurs non capturées
-process.on('unhandledRejection', (err) => {
-  console.error('Unhandled Rejection:', err);
 });

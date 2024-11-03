@@ -13,10 +13,9 @@ export const api = {
       const response = await fetch(`${API_URL}/systems`, {
         method: 'GET',
         headers: defaultHeaders,
-        credentials: 'include',
-        mode: 'cors'  // Ajoutez cette ligne
+        mode: 'cors'  // Gardez cette ligne
       });
-
+  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
