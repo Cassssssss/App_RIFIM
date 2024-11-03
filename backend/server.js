@@ -18,7 +18,11 @@ const corsOptions = {
 };
 
 // Middleware
-app.use(cors(corsOptions));
+app.use(cors({
+    origin: process.env.CORS_ORIGIN || 'https://sea-turtle-app-srwkw.ondigitalocean.app',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+  }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

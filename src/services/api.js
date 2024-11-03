@@ -1,17 +1,45 @@
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5002/api';
+console.log('Configuration API:', {
+  API_URL,
+  NODE_ENV: process.env.NODE_ENV,
+  REACT_APP_API_URL: process.env.REACT_APP_API_URL
+});
 
 export const api = {
-    // Vos autres méthodes...
     getSystems: async () => {
+      console.log('🔵 Début getSystems');
       try {
-        console.log('Calling API at:', API_URL); // Debug
-        const response = await fetch(`${API_URL}/systems`);
-        if (!response.ok) throw new Error('Erreur lors du chargement des systèmes');
+        console.log('📡 Tentative de connexion à:', `${API_URL}/systems`);
+        const response = await fetch(`${API_URL}/systems`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            // Ajout des headers CORS explicites
+            'Origin': window.location.origin
+          },
+          mode: 'cors' // Forcer le mode CORS
+        });
+  
+        console.log('📥 Réponse reçue:', {
+          ok: response.ok,
+          status: response.status,
+          statusText: response.statusText
+        });
+  
+        if (!response.ok) {
+          console.log('❌ Réponse non OK');
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const data = await response.json();
-        console.log('Received data:', data); // Debug
+        console.log('✅ Données reçues:', data);
         return data;
       } catch (error) {
-        console.error('Erreur API détaillée:', error);
+        console.log('🔴 Erreur dans getSystems:', {
+          message: error.message,
+          stack: error.stack,
+          type: error.constructor.name
+        });
         return [];
       }
     },
