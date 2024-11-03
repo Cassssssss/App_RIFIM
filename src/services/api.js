@@ -1,17 +1,20 @@
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5002/api';
 
 export const api = {
-  // Systèmes
-  getSystems: async () => {
-    try {
-      const response = await fetch(`${API_URL}/systems`);
-      if (!response.ok) throw new Error('Erreur lors du chargement des systèmes');
-      return await response.json();
-    } catch (error) {
-      console.error('Erreur API:', error);
-      return [];
-    }
-  },
+    // Vos autres méthodes...
+    getSystems: async () => {
+      try {
+        console.log('Calling API at:', API_URL); // Debug
+        const response = await fetch(`${API_URL}/systems`);
+        if (!response.ok) throw new Error('Erreur lors du chargement des systèmes');
+        const data = await response.json();
+        console.log('Received data:', data); // Debug
+        return data;
+      } catch (error) {
+        console.error('Erreur API détaillée:', error);
+        return [];
+      }
+    },
 
   createSystem: async (name) => {
     try {
