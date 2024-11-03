@@ -11,6 +11,8 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "ajv": "^8.12.0",
+    "ajv-keywords": "^5.1.0",
     "autoprefixer": "^10.4.20",
     "cors": "^2.8.5",
     "express": "^4.17.1",
@@ -22,12 +24,14 @@
     "react-router-dom": "^6.27.0",
     "react-scripts": "5.0.1",
     "tailwindcss": "^3.4.14",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "webpack": "^5.88.0",
+    "webpack-dev-server": "^4.15.1"
   },
   "scripts": {
     "start": "node backend/src/server.js",
-    "build": "react-scripts build",
-    "dev:client": "react-scripts start",
+    "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
+    "dev:client": "PORT=5003 react-scripts start",
     "dev:server": "cd backend && npm run dev",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\""
   },
@@ -50,15 +54,14 @@
     ]
   },
   "devDependencies": {
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
+    "babel-loader": "^9.1.3",
     "concurrently": "^8.2.2",
+    "html-webpack-plugin": "^5.5.3",
     "nodemon": "^3.1.7"
   },
-  "babel": {
-    "presets": [
-      "react-app"
-    ],
-    "plugins": [
-      "@babel/plugin-proposal-private-property-in-object"
-    ]
+  "engines": {
+    "node": "20.x",
+    "npm": "10.x"
   }
 }
