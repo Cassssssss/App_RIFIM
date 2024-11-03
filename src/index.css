@@ -4,6 +4,27 @@
 
 @import 'react-quill/dist/quill.snow.css';
 
+:root {
+  --sat: env(safe-area-inset-top);
+  --sab: env(safe-area-inset-bottom);
+  --sal: env(safe-area-inset-left);
+  --sar: env(safe-area-inset-right);
+}
+
+body {
+  padding-top: var(--sat);
+}
+
+.safe-header {
+  padding-top: max(1rem, var(--sat));
+  padding-left: max(1rem, var(--sal));
+  padding-right: max(1rem, var(--sar));
+}
+
+.safe-bottom {
+  padding-bottom: max(1rem, var(--sab));
+}
+
 /* Styles pour le contenu de l'éditeur */
 .prose {
   max-width: 65ch;

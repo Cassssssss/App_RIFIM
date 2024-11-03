@@ -1,4 +1,3 @@
-// src/pages/Systems.js
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Plus, Search, Trash2, AlertCircle, Loader } from 'lucide-react';
@@ -12,21 +11,16 @@ export const Systems = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('🔄 Systems component mounted');
     loadSystems();
   }, []);
 
   const loadSystems = async () => {
-    console.log('🔄 Starting loadSystems');
     setLoading(true);
     setError(null);
     try {
-      console.log('📡 Calling API.getSystems');
       const data = await api.getSystems();
-      console.log('📥 Received systems:', data);
       setSystems(Array.isArray(data) ? data : []);
     } catch (error) {
-      console.error('❌ Error in loadSystems:', error);
       setError('Impossible de charger les systèmes. Veuillez réessayer.');
     } finally {
       setLoading(false);
@@ -41,7 +35,6 @@ export const Systems = () => {
         await api.deleteSystem(systemId);
         await loadSystems();
       } catch (error) {
-        console.error('Erreur lors de la suppression:', error);
         setError('Erreur lors de la suppression. Veuillez réessayer.');
       } finally {
         setLoading(false);
@@ -49,15 +42,14 @@ export const Systems = () => {
     }
   };
 
-  const handleRetry = () => {
-    loadSystems();
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-[#4f5b93] text-white p-4">
+    <div className="min-h-screen bg-gray-50 pb-safe">
+      <div className="bg-[#4f5b93] text-white fixed top-0 left-0 right-0 z-50 safe-header">
         <h1 className="text-xl font-semibold">Systèmes radiologiques</h1>
       </div>
+
+      {/* Spacer pour le header fixe */}
+      <div className="h-[calc(4rem+env(safe-area-inset-top))]" />
 
       <div className="p-4">
         <div className="relative mb-4">
@@ -78,7 +70,7 @@ export const Systems = () => {
               <span className="text-red-700">{error}</span>
             </div>
             <button
-              onClick={handleRetry}
+              onClick={loadSystems}
               className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors"
             >
               Réessayer
@@ -91,7 +83,7 @@ export const Systems = () => {
             <Loader className="animate-spin text-[#4f5b93]" size={32} />
           </div>
         ) : (
-          <div className="grid gap-4">
+          <div className="grid gap-4 mb-20">
             {systems.length === 0 && !error ? (
               <div className="text-center p-8 bg-white rounded-lg shadow">
                 <p className="text-gray-500">Aucun système trouvé</p>
@@ -129,7 +121,7 @@ export const Systems = () => {
 
       <button
         onClick={() => navigate('/add-folder/system')}
-        className="fixed bottom-6 right-6 bg-[#4f5b93] text-white rounded-full p-4 shadow-lg hover:bg-[#3f4973] transition-colors disabled:opacity-50"
+        className="fixed bottom-[max(1.5rem,env(safe-area-inset-bottom))] right-6 bg-[#4f5b93] text-white rounded-full p-4 shadow-lg hover:bg-[#3f4973] transition-colors disabled:opacity-50"
         disabled={loading}
       >
         <Plus size={24} />
