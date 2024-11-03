@@ -7,9 +7,13 @@ const apiRoutes = require('../routes/api');
 
 const app = express();
 
-// Configuration CORS pour le développement
+// Configuration CORS 
 app.use(cors({
-  origin: 'http://localhost:5003',
+  origin: [
+    'http://localhost:5003',
+    'https://sea-turtle-app-srwkw.ondigitalocean.app',
+    process.env.CORS_ORIGIN
+  ].filter(Boolean),
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
@@ -30,7 +34,7 @@ app.use((req, res, next) => {
 // Routes API
 app.use('/api', apiRoutes);
 
-const port = 5002;
+const port = process.env.PORT || 5002;
 app.listen(port, () => {
   console.log(`Backend server running on port ${port}`);
   console.log(`API accessible at http://localhost:${port}/api`);
