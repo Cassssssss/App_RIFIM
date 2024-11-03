@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, Edit, Trash2 } from 'lucide-react';
 import { api } from '../services/api';
-import 'react-quill/dist/quill.snow.css';
 
 export const ViewContent = () => {
   const { systemId, locationId, contentId } = useParams();
