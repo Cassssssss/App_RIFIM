@@ -9,11 +9,12 @@
   --sab: env(safe-area-inset-bottom);
   --sal: env(safe-area-inset-left);
   --sar: env(safe-area-inset-right);
+  --safe-top: env(safe-area-inset-top);
 }
 
 body {
-  padding-top: var(--sat);
-}
+    padding-top: 0;  /* Retirez le padding-top s'il existe */
+  }
 
 .safe-header {
   padding-top: max(1rem, var(--sat));
@@ -46,4 +47,20 @@ body {
 .prose h1, .prose h2, .prose h3 {
   margin-top: 1.5em;
   margin-bottom: 0.5em;
+}
+
+.page-container {
+  padding-top: calc(4rem + env(safe-area-inset-top));
+  min-height: 100vh;
+  background-color: #f5f6f8;
+}
+
+/* Style pour la barre de recherche */
+.search-container {
+  padding: 1rem;
+  padding-top: calc(4rem + env(safe-area-inset-top));
+  position: sticky;
+  top: 0;
+  background-color: #f5f6f8;
+  z-index: 10;
 }

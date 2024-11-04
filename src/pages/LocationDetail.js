@@ -95,9 +95,22 @@ export const LocationDetail = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header title="Détails de la localisation" showBack={true} />
+    <Header title="Détails de la localisation" showBack={true} />
+    
+    <div className="search-container">
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Rechercher une fiche..."
+          className="w-full p-2 pl-10 rounded-lg border border-gray-300"
+        />
+      </div>
+    </div>
 
-      <div className="flex border-b overflow-x-auto sticky top-[calc(4rem+env(safe-area-inset-top))] bg-white z-40">
+    <div className="tabs flex border-b overflow-x-auto bg-white">
         <button
           className={`flex-none min-w-[50%] py-3 px-4 ${
             activeTab === 'measure' ? 'border-b-2 border-[#4f5b93] text-[#4f5b93]' : 'text-gray-500'

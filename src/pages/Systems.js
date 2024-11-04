@@ -44,10 +44,23 @@ export const Systems = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-safe">
+    <div className="min-h-screen bg-gray-50">
       <Header title="Systèmes radiologiques" showBack={false} />
+      
+      <div className="search-container">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Rechercher un système..."
+            className="w-full p-2 pl-10 rounded-lg border border-gray-300"
+          />
+        </div>
+      </div>
 
-      <div className="p-4">
+      <div className="p-4 pt-0">
         <div className="relative mb-4">
           <Search className="absolute left-3 top-3 text-gray-400" size={20} />
           <input
@@ -117,8 +130,7 @@ export const Systems = () => {
 
       <button
         onClick={() => navigate('/add-folder/system')}
-        className="fixed bottom-[max(1.5rem,env(safe-area-inset-bottom))] right-6 bg-[#4f5b93] text-white rounded-full p-4 shadow-lg hover:bg-[#3f4973] transition-colors disabled:opacity-50"
-        disabled={loading}
+        className="fixed bottom-[max(1.5rem,env(safe-area-inset-bottom))] right-6 bg-[#4f5b93] text-white rounded-full p-4 shadow-lg hover:bg-[#3f4973] transition-colors"
       >
         <Plus size={24} />
       </button>
