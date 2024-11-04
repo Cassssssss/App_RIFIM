@@ -58,25 +58,33 @@ export const AnatomicalLocations = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header title="Localisations" showBack={true} />
-
-      <div className="p-4">
-        <div className="relative mb-4">
-          <Search className="absolute left-3 top-3 text-gray-400" size={20} />
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Rechercher une localisation..."
-            className="w-full p-2 pl-10 rounded-lg border border-gray-300"
-          />
+      
+      {/* Barre de recherche fixe sous le header */}
+      <div className="fixed top-[calc(4rem+env(safe-area-inset-top))] left-0 right-0 bg-white z-40 border-b">
+        <div className="p-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Rechercher une localisation..."
+              className="w-full p-2 pl-10 rounded-lg border border-gray-300"
+            />
+          </div>
         </div>
-
+      </div>
+  
+      {/* Spacer pour le header fixe + search */}
+      <div className="h-[calc(8rem+env(safe-area-inset-top))]" />
+  
+      <div className="p-4">
         {error && (
           <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
             <p className="text-red-700">{error}</p>
           </div>
         )}
-
+  
         {loading ? (
           <div className="flex justify-center items-center p-8">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#4f5b93]"></div>
@@ -98,16 +106,16 @@ export const AnatomicalLocations = () => {
                 .map((location) => (
                   <div 
                     key={location._id}
-                    className="block bg-white rounded-lg shadow p-4 hover:shadow-lg transition-shadow relative"
+                    className="bg-white rounded-lg shadow p-4 hover:shadow-lg transition-shadow relative"
                   >
                     <Link to={`/system/${systemId}/location/${location._id}`}>
-                      <h2 className="text-lg font-semibold text-[#4f5b93]">
+                      <h2 className="text-lg font-semibold text-[#4f5b93] pr-8">
                         {location.name}
                       </h2>
                     </Link>
                     <button
                       onClick={(e) => handleDelete(location._id, e)}
-                      className="absolute right-4 top-4 text-red-500 hover:text-red-700"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500 hover:text-red-700"
                     >
                       <Trash2 size={20} />
                     </button>
@@ -117,10 +125,10 @@ export const AnatomicalLocations = () => {
           </div>
         )}
       </div>
-
+  
       <button
         onClick={() => navigate(`/add-folder/location/${systemId}`)}
-        className="fixed bottom-[max(1.5rem,env(safe-area-inset-bottom))] right-6 bg-[#4f5b93] text-white rounded-full p-4 shadow-lg hover:bg-[#3f4973] transition-colors"
+        className="fixed bottom-[max(1.5rem,env(safe-area-inset-bottom))] right-6 bg-[#4f5b93] text-white rounded-full p-4 shadow-lg hover:bg-[#3f4973] transition-colors z-50"
       >
         <Plus size={24} />
       </button>

@@ -47,31 +47,26 @@ export const Systems = () => {
     <div className="min-h-screen bg-gray-50">
       <Header title="Systèmes radiologiques" showBack={false} />
       
-      <div className="search-container">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Rechercher un système..."
-            className="w-full p-2 pl-10 rounded-lg border border-gray-300"
-          />
+      {/* Barre de recherche fixe sous le header */}
+      <div className="fixed top-[calc(4rem+env(safe-area-inset-top))] left-0 right-0 bg-white z-40 border-b">
+        <div className="p-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Rechercher un système..."
+              className="w-full p-2 pl-10 rounded-lg border border-gray-300"
+            />
+          </div>
         </div>
       </div>
 
-      <div className="p-4 pt-0">
-        <div className="relative mb-4">
-          <Search className="absolute left-3 top-3 text-gray-400" size={20} />
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Rechercher un système..."
-            className="w-full p-2 pl-10 rounded-lg border border-gray-300"
-          />
-        </div>
+      {/* Spacer pour le header fixe + search */}
+      <div className="h-[calc(8rem+env(safe-area-inset-top))]" />
 
+      <div className="p-4">
         {error && (
           <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center justify-between">
             <div className="flex items-center">

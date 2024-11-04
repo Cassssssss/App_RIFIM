@@ -64,3 +64,18 @@ body {
   background-color: #f5f6f8;
   z-index: 10;
 }
+
+.min-h-screen {
+    min-height: calc(100vh + env(safe-area-inset-top));
+  }
+  
+  .fixed {
+    position: fixed;
+  }
+  
+  /* Pour s'assurer que le contenu ne passe pas sous la barre système iOS */
+  @supports (padding-top: env(safe-area-inset-top)) {
+    body {
+      padding-top: env(safe-area-inset-top);
+    }
+  }

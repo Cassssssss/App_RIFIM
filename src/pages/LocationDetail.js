@@ -93,54 +93,50 @@ export const LocationDetail = () => {
     );
   }
 
-  return (
+return (
     <div className="min-h-screen bg-gray-50">
-    <Header title="Détails de la localisation" showBack={true} />
-    
-    <div className="search-container">
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Rechercher une fiche..."
-          className="w-full p-2 pl-10 rounded-lg border border-gray-300"
-        />
+      <Header title="Détails de la localisation" showBack={true} />
+      
+      {/* Tabs en dessous du header */}
+      <div className="fixed top-[calc(4rem+env(safe-area-inset-top))] left-0 right-0 bg-white z-40">
+        <div className="tabs flex border-b overflow-x-auto">
+          <button
+            className={`flex-none min-w-[50%] py-3 px-4 ${
+              activeTab === 'measure' ? 'border-b-2 border-[#4f5b93] text-[#4f5b93]' : 'text-gray-500'
+            }`}
+            onClick={() => handleTabChange('measure')}
+          >
+            Repères & Mesures
+          </button>
+          <button
+            className={`flex-none min-w-[50%] py-3 px-4 ${
+              activeTab === 'classification' ? 'border-b-2 border-[#4f5b93] text-[#4f5b93]' : 'text-gray-500'
+            }`}
+            onClick={() => handleTabChange('classification')}
+          >
+            Classifications
+          </button>
+        </div>
+        
+        {/* Une seule barre de recherche */}
+        <div className="p-4 bg-white border-b">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Rechercher une fiche..."
+              className="w-full p-2 pl-10 rounded-lg border border-gray-300"
+            />
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div className="tabs flex border-b overflow-x-auto bg-white">
-        <button
-          className={`flex-none min-w-[50%] py-3 px-4 ${
-            activeTab === 'measure' ? 'border-b-2 border-[#4f5b93] text-[#4f5b93]' : 'text-gray-500'
-          }`}
-          onClick={() => handleTabChange('measure')}
-        >
-          Repères & Mesures
-        </button>
-        <button
-          className={`flex-none min-w-[50%] py-3 px-4 ${
-            activeTab === 'classification' ? 'border-b-2 border-[#4f5b93] text-[#4f5b93]' : 'text-gray-500'
-          }`}
-          onClick={() => handleTabChange('classification')}
-        >
-          Classifications
-        </button>
-      </div>
+      {/* Spacer pour le header fixe + tabs + search */}
+      <div className="h-[calc(8rem+env(safe-area-inset-top)+3.5rem)]" />
 
       <div className="p-4">
-        <div className="relative mb-4">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Rechercher une fiche..."
-            className="w-full p-2 pl-10 rounded-lg border border-gray-300"
-          />
-        </div>
-
         {error && (
           <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
             <p className="text-red-700">{error}</p>

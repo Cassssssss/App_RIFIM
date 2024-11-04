@@ -33,33 +33,34 @@ const Header = ({ title, showBack = true }) => {
   return (
     <div className="fixed top-0 left-0 right-0 z-50">
       {/* Safe area spacer */}
-      <div className="w-full h-[env(safe-area-inset-top)] bg-[#4f5b93]" />
+      <div 
+        className="w-full h-[env(safe-area-inset-top)] bg-[#4f5b93]" 
+        style={{ minHeight: 'env(safe-area-inset-top)' }}
+      />
       
       {/* Header content */}
-      <div className="bg-[#4f5b93] text-white">
-        <div className="h-16 flex items-center px-4">
-          <div className="flex items-center flex-1">
-            {showBack && (
-              <button 
-                onClick={handleBack}
-                className="mr-3 -ml-2 p-2"
-              >
-                <ChevronLeft size={24} />
-              </button>
-            )}
-            
-            <h1 className="text-xl font-semibold truncate">
-              {title}
-            </h1>
-          </div>
-
-          <button 
-            onClick={() => navigate('/')} 
-            className="text-white font-semibold hover:text-gray-200 transition-colors"
-          >
-            RIFIM
-          </button>
+      <div className="bg-[#4f5b93] text-white h-16 flex items-center px-4">
+        <div className="flex items-center flex-1 min-h-[4rem]">
+          {showBack && (
+            <button 
+              onClick={handleBack}
+              className="mr-3 -ml-2 p-2"
+            >
+              <ChevronLeft size={24} />
+            </button>
+          )}
+          
+          <h1 className="text-xl font-semibold truncate">
+            {title}
+          </h1>
         </div>
+  
+        <button 
+          onClick={() => navigate('/')} 
+          className="text-white font-semibold hover:text-gray-200 transition-colors"
+        >
+          RIFIM
+        </button>
       </div>
     </div>
   );
