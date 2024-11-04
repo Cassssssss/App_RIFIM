@@ -10,6 +10,11 @@ const contentSchema = new mongoose.Schema({
     enum: ['measure', 'classification'], 
     required: true 
   },
+  folderId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Folder'
+    // Optionnel pour permettre des fiches sans dossier
+  },
   description: String,
   images: [{
     url: String,

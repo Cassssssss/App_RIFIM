@@ -10,9 +10,8 @@ const defaultHeaders = {
   'Accept': 'application/json'
 };
 
-
-
 export const api = {
+  // Systèmes
   getSystems: async () => {
     console.log('🔵 Début getSystems');
     try {
@@ -66,6 +65,7 @@ export const api = {
     }
   },
 
+  // Localisations
   getLocations: async (systemId) => {
     try {
       const response = await fetch(`${API_URL}/systems/${systemId}/locations`, {
@@ -111,6 +111,69 @@ export const api = {
     }
   },
 
+  // Dossiers
+  getLocationFolders: async (locationId, type) => {
+    try {
+      const response = await fetch(`${API_URL}/locations/${locationId}/folders/${type}`, {
+        headers: defaultHeaders,
+        credentials: 'include'
+      });
+      if (!response.ok) throw new Error('Erreur lors du chargement des dossiers');
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur API:', error);
+      return [];
+    }
+  },
+
+  createFolder: async (locationId, folderData) => {
+    try {
+      const response = await fetch(`${API_URL}/locations/${locationId}/folders`, {
+        method: 'POST',
+        headers: defaultHeaders,
+        credentials: 'include',
+        body: JSON.stringify(folderData)
+      });
+      if (!response.ok) throw new Error('Erreur lors de la création du dossier');
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur API:', error);
+      throw error;
+    }
+  },
+
+  updateFolder: async (folderId, folderData) => {
+    try {
+      const response = await fetch(`${API_URL}/folders/${folderId}`, {
+        method: 'PUT',
+        headers: defaultHeaders,
+        credentials: 'include',
+        body: JSON.stringify(folderData)
+      });
+      if (!response.ok) throw new Error('Erreur lors de la mise à jour du dossier');
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur API:', error);
+      throw error;
+    }
+  },
+
+  deleteFolder: async (folderId) => {
+    try {
+      const response = await fetch(`${API_URL}/folders/${folderId}`, {
+        method: 'DELETE',
+        headers: defaultHeaders,
+        credentials: 'include'
+      });
+      if (!response.ok) throw new Error('Erreur lors de la suppression du dossier');
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur API:', error);
+      throw error;
+    }
+  },
+
+  // Contenu
   getLocationContent: async (locationId, type) => {
     try {
       console.log('Fetching content:', { locationId, type });
@@ -224,6 +287,25 @@ export const api = {
       });
       
       if (!response.ok) throw new Error('Erreur lors de la mise à jour du contenu');
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur API:', error);
+      throw error;
+    }
+  },
+
+  moveContent: async (contentId, folderId) => {
+    try {
+      const formData = new FormData();
+      formData.append('folderId', folderId || '');
+      
+      const response = await fetch(`${API_URL}/content/${contentId}`, {
+        method: 'PUT',
+        credentials: 'include',
+        body: formData
+      });
+      
+      if (!response.ok) throw new Error('Erreur lors du déplacement du contenu');
       return await response.json();
     } catch (error) {
       console.error('Erreur API:', error);

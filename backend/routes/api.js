@@ -6,6 +6,7 @@ const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const System = require('../models/System');
 const Location = require('../models/Location');
 const Content = require('../models/Content');
+const Folder = require('../models/Folder');
 
 // Configuration DigitalOcean Spaces
 const s3Client = new S3Client({
@@ -81,7 +82,66 @@ router.delete('/locations/:locationId', async (req, res) => {
   try {
     await Location.findByIdAndDelete(req.params.locationId);
     await Content.deleteMany({ locationId: req.params.locationId });
+    await Folder.deleteMany({ locationId: req.params.locationId });
     res.json({ message: 'Localisation supprimée' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Routes pour les dossiers
+router.get('/locations/:locationId/folders/:type', async (req, res) => {
+  try {
+    const folders = await Folder.find({
+      locationId: req.params.locationId,
+      type: req.params.type
+    }).sort('order');
+    res.json(folders);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.post('/locations/:locationId/folders', async (req, res) => {
+  try {
+    const folder = new Folder({
+      name: req.body.name,
+      locationId: req.params.locationId,
+      type: req.body.type,
+      order: req.body.order
+    });
+    await folder.save();
+    res.status(201).json(folder);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+router.put('/folders/:folderId', async (req, res) => {
+  try {
+    const updatedFolder = await Folder.findByIdAndUpdate(
+      req.params.folderId,
+      {
+        name: req.body.name,
+        order: req.body.order
+      },
+      { new: true }
+    );
+    res.json(updatedFolder);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.delete('/folders/:folderId', async (req, res) => {
+  try {
+    await Folder.findByIdAndDelete(req.params.folderId);
+    // Mettre à jour les fiches associées
+    await Content.updateMany(
+      { folderId: req.params.folderId },
+      { $unset: { folderId: "" } }
+    );
+    res.json({ message: 'Dossier supprimé' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -100,44 +160,44 @@ router.get('/locations/:locationId/content/:type', async (req, res) => {
   }
 });
 
-// Nouvelle route pour obtenir un contenu spécifique
 router.get('/content/:contentId', async (req, res) => {
-    try {
-      console.log('Backend: received request for content:', req.params.contentId);
-      console.log('Request headers:', req.headers);
-      
-      const content = await Content.findById(req.params.contentId);
-      console.log('Found content:', content ? 'yes' : 'no', content ? content : '');
-      
-      if (!content) {
-        console.log('Content not found');
-        return res.status(404).json({ 
-          error: 'Contenu non trouvé',
-          contentId: req.params.contentId 
-        });
-      }
-  
-      console.log('Sending content back to client');
-      res.json(content);
-    } catch (error) {
-      console.error('Backend error details:', {
-        error: error.message,
-        stack: error.stack
+  try {
+    console.log('Backend: received request for content:', req.params.contentId);
+    console.log('Request headers:', req.headers);
+    
+    const content = await Content.findById(req.params.contentId);
+    console.log('Found content:', content ? 'yes' : 'no', content ? content : '');
+    
+    if (!content) {
+      console.log('Content not found');
+      return res.status(404).json({ 
+        error: 'Contenu non trouvé',
+        contentId: req.params.contentId 
       });
-      res.status(500).json({ error: error.message });
     }
-  });
+
+    console.log('Sending content back to client');
+    res.json(content);
+  } catch (error) {
+    console.error('Backend error details:', {
+      error: error.message,
+      stack: error.stack
+    });
+    res.status(500).json({ error: error.message });
+  }
+});
 
 router.post('/locations/:locationId/content', upload.array('images'), async (req, res) => {
   try {
     const { locationId } = req.params;
-    const { title, type, description } = req.body;
+    const { title, type, description, folderId } = req.body;
 
     console.log('Received content creation request:', {
       locationId,
       title,
       type,
       description,
+      folderId,
       files: req.files?.length || 0
     });
 
@@ -168,7 +228,8 @@ router.post('/locations/:locationId/content', upload.array('images'), async (req
       type,
       description,
       images,
-      locationId
+      locationId,
+      folderId: folderId || null
     });
 
     await content.save();
@@ -179,10 +240,9 @@ router.post('/locations/:locationId/content', upload.array('images'), async (req
   }
 });
 
-// Nouvelle route pour mettre à jour un contenu
 router.put('/content/:contentId', upload.array('images'), async (req, res) => {
   try {
-    const { title, description, type } = req.body;
+    const { title, description, type, folderId } = req.body;
     const existingContent = await Content.findById(req.params.contentId);
 
     if (!existingContent) {
@@ -214,14 +274,23 @@ router.put('/content/:contentId', upload.array('images'), async (req, res) => {
     const existingImages = req.body.existingImages ? JSON.parse(req.body.existingImages) : [];
     const updatedImages = [...existingImages, ...newImages];
 
+    const updateData = {
+      title,
+      description,
+      type,
+      images: updatedImages
+    };
+
+    // Ajouter ou retirer le folderId selon le cas
+    if (folderId === '') {
+      updateData.$unset = { folderId: "" };
+    } else if (folderId) {
+      updateData.folderId = folderId;
+    }
+
     const updatedContent = await Content.findByIdAndUpdate(
       req.params.contentId,
-      {
-        title,
-        description,
-        type,
-        images: updatedImages
-      },
+      updateData,
       { new: true }
     );
 
