@@ -110,60 +110,58 @@ export const LocationDetail = () => {
     }
   };
 
-return (
-  <div className="min-h-screen bg-gray-50">
-    <Header title="Détails de la localisation" showBack={true} />
-    
-    {/* Header et tabs optimisés */}
-    <div className="fixed top-[env(safe-area-inset-top)] left-0 right-0 bg-white z-40">
-      {/* Tabs directement sous le header */}
-      <div className="tabs flex border-b overflow-x-auto mt-16"> {/* mt-16 pour compenser le header */}
-        <button
-          className={`flex-none min-w-[50%] py-2 px-4 ${
-            activeTab === 'measure' ? 'border-b-2 border-[#4f5b93] text-[#4f5b93]' : 'text-gray-500'
-          }`}
-          onClick={() => handleTabChange('measure')}
-        >
-          Repères & Mesures
-        </button>
-        <button
-          className={`flex-none min-w-[50%] py-2 px-4 ${
-            activeTab === 'classification' ? 'border-b-2 border-[#4f5b93] text-[#4f5b93]' : 'text-gray-500'
-          }`}
-          onClick={() => handleTabChange('classification')}
-        >
-          Classifications
-        </button>
-      </div>
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header title="Détails de la localisation" showBack={true} />
       
-      {/* Barre de recherche plus compacte */}
-      <div className="px-3 py-2 bg-white border-b">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Rechercher une fiche..."
-            className="w-full p-2 pl-9 rounded-lg border border-gray-300 text-sm"
-          />
+      {/* Tabs en dessous du header */}
+      <div className="fixed top-[calc(4rem+env(safe-area-inset-top))] left-0 right-0 bg-white z-40">
+        <div className="tabs flex border-b overflow-x-auto">
+          <button
+            className={`flex-none min-w-[50%] py-3 px-4 ${
+              activeTab === 'measure' ? 'border-b-2 border-[#4f5b93] text-[#4f5b93]' : 'text-gray-500'
+            }`}
+            onClick={() => handleTabChange('measure')}
+          >
+            Repères & Mesures
+          </button>
+          <button
+            className={`flex-none min-w-[50%] py-3 px-4 ${
+              activeTab === 'classification' ? 'border-b-2 border-[#4f5b93] text-[#4f5b93]' : 'text-gray-500'
+            }`}
+            onClick={() => handleTabChange('classification')}
+          >
+            Classifications
+          </button>
+        </div>
+        
+        {/* Barre de recherche */}
+        <div className="p-4 bg-white border-b">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Rechercher une fiche..."
+              className="w-full p-2 pl-10 rounded-lg border border-gray-300"
+            />
+          </div>
         </div>
       </div>
-    </div>
 
-    {/* Spacer ajusté */}
-    <div className="h-[calc(7rem+env(safe-area-inset-top))]" />
+      {/* Spacer pour le header fixe + tabs + search */}
+      <div className="h-[calc(8rem+env(safe-area-inset-top)+3.5rem)]" />
 
-    {/* Contenu principal avec padding réduit */}
-    <div className="px-3 py-2">
-      {/* Bouton nouveau dossier plus compact */}
-      <button
-        onClick={() => setShowNewFolderModal(true)}
-        className="mb-2 flex items-center gap-2 text-[#4f5b93] hover:text-[#3f4973] text-sm"
-      >
-        <FolderPlus size={18} />
-        <span>Nouveau dossier</span>
-      </button>
+      <div className="p-4">
+        {/* Bouton pour créer un nouveau dossier */}
+        <button
+          onClick={() => setShowNewFolderModal(true)}
+          className="mb-4 flex items-center gap-2 text-[#4f5b93] hover:text-[#3f4973]"
+        >
+          <FolderPlus size={20} />
+          <span>Nouveau dossier</span>
+        </button>
 
         {/* Liste des dossiers et leur contenu */}
         {folders.map(folder => (
